@@ -39,3 +39,6 @@ function adicionarDados(grafico, legenda, dados) {
 
   grafico.update();
 }
+
+let workerDolar = new Worker('./script/worker/workerDolar.js');
+workerDolar.postMessage('usd');
