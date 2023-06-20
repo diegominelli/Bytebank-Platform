@@ -14,8 +14,6 @@ const graficoParaDolar = new Chart(graficoDolar, {
   },
 });
 
-setInterval(() => conectaAPI(), 5000);
-
 function geraHorario() {
   let data = new Date();
   let horario = data.getHours() + ":" + data.getMinutes() + ':' + data.getSeconds();
@@ -32,5 +30,12 @@ function adicionarDados(grafico, legenda, dados) {
   grafico.update();
 }
 
-let workerDolar = new Worker('./script/worker/workerDolar.js');
+let workerDolar = new Worker('./script/workers/workerDolar.js');
 workerDolar.postMessage('usd');
+
+workerDolar.addEventListener("message", event => {
+  let tempo = geraHorario();
+  let valor = event.data.ask;
+  imprimeCotacao("dolar", valor);
+  adicionarDados(graficoParaDolar, tempo, valor);
+})
