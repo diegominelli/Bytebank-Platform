@@ -42,7 +42,7 @@ workerDolar.addEventListener("message", event => {
 
 const graficoIene = document.getElementById('graficoIene');
 
-const graficoParaiene = new Chart(graficoIene, {
+const graficoParaIene = new Chart(graficoIene, {
   type: 'line',
   data: {
     labels: [],
@@ -53,3 +53,12 @@ const graficoParaiene = new Chart(graficoIene, {
     }]
   },
 });
+
+let workerIene = new Worker("./script/workers/workerIene.js");
+workerIene.postMessage("iene");
+workerIene.addEventListener("message", event => {
+  let tempo = geraHorario();
+  let valor = event.data.ask;
+  adicionarDados(graficoParaIene, tempo, valor);
+  imprimeCotacao("iene", valor);
+})
